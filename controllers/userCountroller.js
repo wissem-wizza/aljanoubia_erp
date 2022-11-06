@@ -9,27 +9,51 @@ const getUser = asyncHandler( async (req,res) => {
 })
 
 const setUser = asyncHandler( async (req,res) => {
-    if (!req.body.text) {
+    if (!req.body.username) {
         res.status(400)
         throw new Error('Please add a username')
     }
 
-    res.status(200).json({msg : 'set user!'})
+    const user = await User.create({
+        username : req.body.username,
+    })
+
+    res.status(200).json(user)
 })
 
 // @desc Update user
 // @route PUT /api/user/:id
 // @access Private
 const updateUser = asyncHandler( async (req,res) => {
-    res.status(200).json({msg : `${req.params.id} updated`}
-)})
+    const user = await User.findById(req.params.id)
+
+    if(!user){
+        res.status(400)
+        throw new Error('User not found')
+    }
+
+    const updateUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+        new : true,
+    })
+
+    res.status(200).json(updateUser)
+})
 
 // @desc Delete user
 // @route DELETE /api/user/:id
 // @access Private
 const deleteUser = asyncHandler( async (req,res) => {
-    res.status(200).json({msg : `${req.params.id} deleted`}
-)})
+    const user = await User.findById(req.params.id)
+
+    if(!user){
+        res.status(400)
+        throw new Error('User not found')
+    }
+    
+    await user.remove()
+
+    res.status(200).json({id : req.params.id})
+})
 
 module.exports = {
     getUser,
