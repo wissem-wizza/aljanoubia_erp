@@ -5,7 +5,7 @@ const User = require('../models/userModel')
 
 
 // @desc Register new user
-// @route POST /api/user
+// @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password} = req.body
@@ -47,7 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
 // @desc Authenticate a user
-// @route POST /api/user/login
+// @route POST /api/users/login
 // @access Public
 const LoginUser = asyncHandler(async(req, res) => {
     
@@ -72,15 +72,10 @@ const LoginUser = asyncHandler(async(req, res) => {
 
 
 // @desc Get user data
-// @route GET /api/user/me
+// @route GET /api/users/me
 // @access Private
 const getMe = asyncHandler(async (req, res) => {
-    const {_id, name, email} = await User.findById(req.user.id)
-    res.status(200).json({
-        id : _id,
-        name,
-        email,
-    })
+    res.status(200).json(req.user)
 })
 
 // Generate JWT

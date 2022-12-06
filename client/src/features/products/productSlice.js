@@ -1,21 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import billService from './billService'
+import productService from './productService'
 
 const initialState = {
-  bills: [],
+  products: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: '',
 }
 
-// Create new bill
-export const createBill = createAsyncThunk(
-  'bills/create',
-  async (billData, thunkAPI) => {
+// Create new product
+export const createProduct = createAsyncThunk(
+  'products/create',
+  async (productData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await billService.createBill(billData, token)
+      return await productService.createProduct(productData, token)
     } catch (error) {
       const message =
         (error.response &&
@@ -28,13 +28,13 @@ export const createBill = createAsyncThunk(
   }
 )
 
-// Get user bills
-export const getBills = createAsyncThunk(
-  'bills/getAll',
+// Get user products
+export const getProducts = createAsyncThunk(
+  'products/getAll',
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await billService.getBills(token)
+      return await productService.getProducts(token)
     } catch (error) {
       const message =
         (error.response &&
@@ -47,13 +47,13 @@ export const getBills = createAsyncThunk(
   }
 )
 
-// Delete user bill
-export const deleteBill = createAsyncThunk(
-  'bills/delete',
+// Delete user product
+export const deleteProduct = createAsyncThunk(
+  'products/delete',
   async (id, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await billService.deleteBill(id, token)
+      return await productService.deleteProduct(id, token)
     } catch (error) {
       const message =
         (error.response &&
@@ -66,51 +66,51 @@ export const deleteBill = createAsyncThunk(
     }
     )
 
-export const billSlice = createSlice({
-  name: 'bill',
+export const productSlice = createSlice({
+  name: 'product',
   initialState,
   reducers: {
     reset: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createBill.pending, (state) => {
+      .addCase(createProduct.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(createBill.fulfilled, (state, action) => {
+      .addCase(createProduct.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.bills.push(action.payload)
+        state.products.push(action.payload)
       })
-      .addCase(createBill.rejected, (state, action) => {
+      .addCase(createProduct.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
       })
-      .addCase(getBills.pending, (state) => {
+      .addCase(getProducts.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(getBills.fulfilled, (state, action) => {
+      .addCase(getProducts.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.bills = action.payload
+        state.products = action.payload
       })
-      .addCase(getBills.rejected, (state, action) => {
+      .addCase(getProducts.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
       })
-      .addCase(deleteBill.pending, (state) => {
+      .addCase(deleteProduct.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(deleteBill.fulfilled, (state, action) => {
+      .addCase(deleteProduct.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.bills = state.bills.filter(
-          (bill) => bill._id !== action.payload.id
+        state.products = state.products.filter(
+          (product) => product._id !== action.payload.id
         )
       })
-      .addCase(deleteBill.rejected, (state, action) => {
+      .addCase(deleteProduct.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
@@ -118,5 +118,5 @@ export const billSlice = createSlice({
   },
 })
 
-export const { reset } = billSlice.actions
-export default billSlice.reducer
+export const { reset } = productSlice.actions
+export default productSlice.reducer

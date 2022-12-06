@@ -93,6 +93,12 @@ h3 {
   gap: 10px;
 }
 
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
 .bill {
   background-color: #f4f4f4;
   margin: 10px 0;
