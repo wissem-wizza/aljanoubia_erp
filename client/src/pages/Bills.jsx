@@ -5,6 +5,7 @@ import BillForm from '../components/BillForm'
 import BillItem from '../components/BillItem'
 import Spinner from '../components/Spinner'
 import { getBills, reset } from '../features/bills/billSlice'
+import { getProducts } from '../features/products/productSlice'
 
 function Bill() {
   const navigate = useNavigate()
@@ -26,6 +27,7 @@ function Bill() {
     }
 
     dispatch(getBills())
+    dispatch(getProducts())
 
     return () => {
       dispatch(reset())
@@ -39,8 +41,8 @@ function Bill() {
   return (
     <>
       <section className='heading'>
-        <h1>Welcome {user && user.name}</h1>
-        <p>Bills Bill</p>
+        <h1>Gestion des factures</h1>
+        <p>tableau de bord des factures</p>
       </section>
 
       <BillForm />
@@ -53,7 +55,7 @@ function Bill() {
             ))}
           </div>
         ) : (
-          <h3>You have not set any bills</h3>
+          <h3>Vous n'avez ajouté aucune facture</h3>
         )}
       </section>
     </>

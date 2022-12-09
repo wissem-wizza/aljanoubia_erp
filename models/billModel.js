@@ -1,25 +1,29 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const billSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User',
+      ref: "User",
+    },
+    date: {
+      type: Date,
+      required: true,
     },
     product: {
       type: mongoose.Schema.Types.ObjectId,
-      required: [true, 'Please add a product'],
-      ref: 'Product',
+      required: [true, "Merci d'ajouter un produit"],
+      ref: "Product",
     },
-    text: {
+    mode_reglement: {
       type: String,
-      required: [true, 'Please add a text value'],
+      required: [true, "Veuillez préciser le mode de paiement"],
     },
   },
   {
     timestamps: true,
   }
-)
+);
 
-module.exports = mongoose.model('Bill', billSchema)
+module.exports = mongoose.model("Bill", billSchema);

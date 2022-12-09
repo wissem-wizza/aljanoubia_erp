@@ -6,7 +6,7 @@ import { FaUser } from 'react-icons/fa'
 import { register, reset } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 
-
+const customId = "custom-id-yes"; // pour que le toast ne s'affiche qu'une seule fois
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -31,6 +31,8 @@ function Register() {
     }
 
     if (isSuccess || user) {
+      toast.success("Votre compte a été ajouté avec succès !", {
+        toastId: customId});
       navigate('/')
     }
 
@@ -48,7 +50,7 @@ function Register() {
     e.preventDefault()
 
     if (password !== password2) {
-      toast.error('Passwords do not match')
+      toast.error('Les mots de passe ne correspondent pas')
     } else {
       const userData = {
         name,
@@ -68,9 +70,9 @@ console.log(userData)
     <>
       <section className='heading'>
         <h1>
-          <FaUser /> Register
+          <FaUser /> Inscription
         </h1>
-        <p>Please create an account</p>
+        <p>Veuillez créer un compte</p>
       </section>
 
       <section className='form'>
@@ -82,7 +84,7 @@ console.log(userData)
               id='name'
               name='name'
               value={name}
-              placeholder='Enter your name'
+              placeholder='Enter votre nom'
               onChange={onChange}
             />
           </div>
@@ -93,7 +95,7 @@ console.log(userData)
               id='email'
               name='email'
               value={email}
-              placeholder='Enter your email'
+              placeholder='Entrer votre Email'
               onChange={onChange}
             />
           </div>
@@ -104,7 +106,7 @@ console.log(userData)
               id='password'
               name='password'
               value={password}
-              placeholder='Enter password'
+              placeholder='Entrer le mot de passe'
               onChange={onChange}
             />
           </div>
@@ -115,13 +117,13 @@ console.log(userData)
               id='password2'
               name='password2'
               value={password2}
-              placeholder='Confirm password'
+              placeholder='Confirmer le mot de passe'
               onChange={onChange}
             />
           </div>
           <div className='form-group'>
             <button type='submit' className='btn btn-block'>
-              Register
+            Inscription
             </button>
           </div>
         </form>

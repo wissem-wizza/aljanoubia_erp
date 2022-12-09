@@ -2,6 +2,7 @@ import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout, reset } from '../features/auth/authSlice'
+import Logo from '../images/Logo.ico';
 
 function Header() {
   const navigate = useNavigate()
@@ -11,31 +12,50 @@ function Header() {
   const onLogout = () => {
     dispatch(logout())
     dispatch(reset())
-    navigate('/')
+    navigate('/login')
   }
 
   return (
     <header className='header'>
       <div className='logo'>
-        <Link to='/'>Al Janoubia</Link>
+      {user ?(
+        <Link to='/'><img src={Logo} alt='aljanoubia img' width={70} height={70} /></Link>
+      ):(
+        <Link to='/login'><img src={Logo} alt='aljanoubia img' width={70} height={70} /></Link>
+      )}
       </div>
+      <ul>
+      {user ?(
+        <>
+          <li>
+            <Link to='/bill'>Factures</Link>
+          </li>
+          <li>
+            <Link to='/products'>Stock</Link>
+          </li>
+          <li>
+            <Link to='/employer'>Employeurs</Link>
+          </li>
+        </>
+      ):(<></>)}
+      </ul>
       <ul>
         {user ? (
           <li>
             <button className='btn' onClick={onLogout}>
-              <FaSignOutAlt /> Logout
+              <FaSignOutAlt /> Se déconnecter
             </button>
           </li>
         ) : (
           <>
             <li>
               <Link to='/login'>
-                <FaSignInAlt /> Login
+                <FaSignInAlt /> Connexion
               </Link>
             </li>
             <li>
               <Link to='/register'>
-                <FaUser /> Register
+                <FaUser /> Inscription
               </Link>
             </li>
           </>

@@ -1,5 +1,8 @@
 import { useDispatch } from 'react-redux'
-import { deleteBill } from '../features/bills/billSlice'
+import { deleteBill , updateBill } from '../features/bills/billSlice'
+import EditIcon from '@mui/icons-material/Edit';
+import PrintIcon from '@mui/icons-material/Print';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function BillItem({ bill }) {
   const dispatch = useDispatch()
@@ -8,9 +11,11 @@ function BillItem({ bill }) {
     <div className='bill'>
       <div>{new Date(bill.createdAt).toLocaleString('en-US')}</div>
       <h2>{bill.text}</h2>
-      <button onClick={() => dispatch(deleteBill(bill._id))} className='close'>
-        X
+      <button onClick={() => dispatch(deleteBill(bill._id))}>
+      <DeleteIcon></DeleteIcon>
       </button>
+      {/* <button onClick={() => dispatch(updateBill(bill._id))}><EditIcon></EditIcon></button> */}
+      <button><PrintIcon></PrintIcon></button>
     </div>
   )
 }

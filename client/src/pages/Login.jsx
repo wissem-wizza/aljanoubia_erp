@@ -59,9 +59,9 @@ function Login() {
     <>
       <section className='heading'>
         <h1>
-          <FaSignInAlt /> Login
+          <FaSignInAlt /> Connexion
         </h1>
-        <p>Login to start our ERP experience</p>
+        <p>Connectez-vous pour commencer l'expérience ERP</p>
       </section>
 
       <section className='form'>
@@ -73,7 +73,7 @@ function Login() {
               id='email'
               name='email'
               value={email}
-              placeholder='Enter your email'
+              placeholder='Entrer votre Email'
               onChange={onChange}
             />
           </div>
@@ -84,14 +84,14 @@ function Login() {
               id='password'
               name='password'
               value={password}
-              placeholder='Enter password'
+              placeholder='Entrer le mot de passe'
               onChange={onChange}
             />
           </div>
 
           <div className='form-group'>
             <button type='submit' className='btn btn-block'>
-              Login
+              SE CONNECTER
             </button>
           </div>
         </form>

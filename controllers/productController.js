@@ -1,95 +1,105 @@
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require("express-async-handler");
+const { type } = require("express/lib/response");
 
-const Product = require('../models/productModel')
+const Product = require("../models/productModel");
 // const User = require('../models/userModel')
 
 // @desc    Get products
 // @route   GET /api/products
 // @access  Private
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({ user: req.user.id })
+  const products = await Product.find(); //{ user: req.user.id }
 
-  res.status(200).json(products)
-})
+  res.status(200).json(products);
+});
 
 // @desc    Set product
 // @route   POST /api/products
 // @access  Private
 const setProduct = asyncHandler(async (req, res) => {
-  if (!req.body.text) {
-    res.status(400)
-    throw new Error('Please add a text field')
+  if (!req.body.name) {
+    res.status(400);
+    throw new Error("Veuillez ajouter un nom pour le produit");
   }
+  if (!req.body.type) {
+    req.body.type = undefined;
+  }
+  if (!req.body.quantity) {
+    res.status(400);
+    throw new Error("Veuillez ajouter une quantitée pour ce produit");
+  }
+  if (!req.body.price) {
+    res.status(400);
+    throw new Error("Veuillez ajouter un prix pour ce produit");
+  }
+  console.log(req.body);
 
   const product = await Product.create({
-    text: req.body.text,
-    user: req.user.id,
-  })
+    name: req.body.name,
+    type: req.body.type,
+    quantity: req.body.quantity,
+    price: req.body.price,
+  });
 
-  res.status(200).json(product)
-})
+  res.status(200).json(product);
+});
 
 // @desc    Update product
 // @route   PUT /api/products/:id
 // @access  Private
 const updateProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id)
+  const product = await Product.findById(req.params.id);
 
   if (!product) {
-    res.status(400)
-    throw new Error('Product not found')
+    res.status(400);
+    throw new Error("produit non trouvé");
   }
 
-  // Check for user
-  if (!req.user) {
-    res.status(401)
-    throw new Error('User not found')
+  // Check for fields
+
+  if (!req.body.name) {
+    res.status(400);
+    throw new Error("Veuillez ajouter un nom pour le produit");
+  }
+  if (!req.body.quantity) {
+    res.status(400);
+    throw new Error("Veuillez ajouter une quantitée pour ce produit");
+  }
+  if (!req.body.price) {
+    res.status(400);
+    throw new Error("Veuillez ajouter un prix pour ce produit");
   }
 
-  // Make sure the logged in user matches the product user
-  if (product.user.toString() !== req.user.id) {
-    res.status(401)
-    throw new Error('User not authorized')
-  }
+  const updatedProduct = await Product.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+    }
+  );
 
-  const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  })
-
-  res.status(200).json(updatedProduct)
-})
+  res.status(200).json(updatedProduct);
+});
 
 // @desc    Delete product
 // @route   DELETE /api/products/:id
 // @access  Private
 const deleteProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id)
+  const product = await Product.findById(req.params.id);
 
   if (!product) {
-    res.status(400)
-    throw new Error('Product not found')
+    res.status(400);
+    throw new Error("Product not found");
   }
 
-  // Check for user
-  if (!req.user) {
-    res.status(401)
-    throw new Error('User not found')
-  }
+  await product.remove();
 
-  // Make sure the logged in user matches the product user
-  if (product.user.toString() !== req.user.id) {
-    res.status(401)
-    throw new Error('User not authorized')
-  }
-
-  await product.remove()
-
-  res.status(200).json({ id: req.params.id })
-})
+  res.status(200).json({ id: req.params.id });
+});
 
 module.exports = {
-    getProducts,
-    setProduct,
-    updateProduct,
-    deleteProduct,
-}
+  getProducts,
+  setProduct,
+  updateProduct,
+  deleteProduct,
+};
