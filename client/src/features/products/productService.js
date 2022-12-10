@@ -36,7 +36,7 @@ const updateProduct = async (productData) => {
   //   },
   // };
 
-  const response = await axios.post(API_URL, productData);
+  const response = await axios.patch(API_URL, productData);
 
   return response.data;
 };

@@ -12,11 +12,11 @@ const billSchema = mongoose.Schema(
       required: true,
     },
     product: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: [true, "Merci d'ajouter un produit"],
-      ref: "Product",
+      type: String,
+      required: [true, "Veuillez ajouter un produit"],
+      // ref: "Product",
     },
-    mode_reglement: {
+    payment: {
       type: String,
       required: [true, "Veuillez préciser le mode de paiement"],
     },

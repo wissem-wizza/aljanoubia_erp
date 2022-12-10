@@ -45,10 +45,11 @@ const setProduct = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update product
-// @route   PUT /api/products/:id
+// @route   PUT /api/products
 // @access  Private
 const updateProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
+  console.log("proooooooooooooo", req.body)
+  const product = await Product.findById(req.body.product_id);
 
   if (!product) {
     res.status(400);
@@ -57,26 +58,28 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   // Check for fields
 
-  if (!req.body.name) {
+  if (!product.name) {
     res.status(400);
     throw new Error("Veuillez ajouter un nom pour le produit");
   }
-  if (!req.body.quantity) {
+  if (!product.quantity) {
     res.status(400);
     throw new Error("Veuillez ajouter une quantitée pour ce produit");
   }
-  if (!req.body.price) {
+  if (!product.price) {
     res.status(400);
     throw new Error("Veuillez ajouter un prix pour ce produit");
   }
 
-  const updatedProduct = await Product.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
-      new: true,
-    }
-  );
+  let updatedProduct;
+  try {
+    console.log("rrrrrrrrrrrrrrrrrrrrrrr", product.product_id)
+    updatedProduct = await Product.findByIdAndUpdate(
+      product.product_id,
+    );
+  } catch (error) {
+    console.log(error)
+  }
 
   res.status(200).json(updatedProduct);
 });

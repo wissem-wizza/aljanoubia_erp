@@ -93,6 +93,11 @@ h3 {
   gap: 10px;
 }
 
+.Bill-Line {
+  display: flex;
+  justify-content: space-between;
+}
+
 .products {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
